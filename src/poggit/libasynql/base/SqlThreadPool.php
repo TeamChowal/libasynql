@@ -22,7 +22,6 @@ declare(strict_types=1);
 
 namespace poggit\libasynql\base;
 
-use Closure;
 use InvalidArgumentException;
 use pocketmine\Server;
 use pocketmine\snooze\SleeperNotifier;
@@ -31,8 +30,8 @@ use poggit\libasynql\SqlThread;
 class SqlThreadPool implements SqlThread{
 	/** @var SleeperNotifier */
 	private SleeperNotifier $notifier;
-	/** @var Closure */
-	private Closure $workerFactory;
+	/** @var callable */
+	private $workerFactory;
 	/** @var SqlSlaveThread[] */
 	private array $workers = [];
 	/** @var int */
