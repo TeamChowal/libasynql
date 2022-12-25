@@ -41,7 +41,7 @@ abstract class SqlSlaveThread extends Thread implements SqlThread{
 	private static int $nextSlaveNumber = 0;
 
 	protected int $slaveNumber;
-	protected QueryRecvQueue $bufferSend;
+	protected QuerySendQueue $bufferSend;
 	protected QueryRecvQueue $bufferRecv;
 	protected bool $connCreated = false;
 	protected ?string $connError = null;
@@ -56,7 +56,6 @@ abstract class SqlSlaveThread extends Thread implements SqlThread{
 		$this->bufferRecv->addAvailableThread();
 
 		if(!libasynql::isPackaged()){
-			/** @noinspection PhpUndefinedMethodInspection */
 			/** @noinspection NullPointerExceptionInspection */
 			/** @var ClassLoader $cl */
 			$cl = Server::getInstance()->getPluginManager()->getPlugin("DEVirion")->getVirionClassLoader();

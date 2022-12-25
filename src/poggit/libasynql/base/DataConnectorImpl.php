@@ -244,7 +244,6 @@ class DataConnectorImpl implements DataConnector{
 						for($i = count($newTrace) - 1, $j = count($oldTrace) - 1; $i >= 0 && $j >= 0 && $newTrace[$i] === $oldTrace[$j]; --$i, --$j){
 							array_pop($newTrace);
 						}
-						/** @noinspection PhpUndefinedMethodInspection */
 						$prop->setValue($e, array_merge($newTrace, [
 							[
 								"function" => Terminal::$COLOR_YELLOW . "--- below is the original stack trace ---" . Terminal::$FORMAT_RESET,
@@ -265,7 +264,6 @@ class DataConnectorImpl implements DataConnector{
 						for($i = count($newTrace) - 1, $j = count($oldTrace) - 1; $i >= 0 && $j >= 0 && $newTrace[$i] === $oldTrace[$j]; --$i, --$j){
 							array_pop($newTrace);
 						}
-						/** @noinspection PhpUndefinedMethodInspection */
 						$errorProperty->setValue($e, array_merge($newTrace, [
 							[
 								"function" => Terminal::$COLOR_YELLOW . "--- below is the original stack trace ---" . Terminal::$FORMAT_RESET,
