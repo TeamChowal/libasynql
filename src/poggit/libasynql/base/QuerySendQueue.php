@@ -27,9 +27,9 @@ use function serialize;
 
 class QuerySendQueue extends Threaded{
 	/** @var bool */
-	private $invalidated = false;
+	private bool $invalidated = false;
 	/** @var Threaded */
-	private $queries;
+	private Threaded $queries;
 
 	public function __construct(){
 		$this->queries = new Threaded();

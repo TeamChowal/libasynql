@@ -55,12 +55,12 @@ class SqlError extends RuntimeException{
 	 */
 	public const STAGE_RESPONSE = "RESPONSE";
 
-	private $stage;
-	private $errorMessage;
-	private $query;
-	private $args;
+	private string $stage;
+	private string $errorMessage;
+	private ?string $query;
+	private ?array $args;
 
-	public function __construct(string $stage, string $errorMessage, string $query = null, array $args = null){
+	public function __construct(string $stage, string $errorMessage, ?string $query = null, ?array $args = null){
 		$this->stage = $stage;
 		$this->errorMessage = $errorMessage;
 		$this->query = $query;
@@ -135,7 +135,7 @@ class SqlError extends RuntimeException{
 			}
 			unset($call);
 			$traceProperty->setValue($this, $trace);
-		}while($exception = $this->getPrevious());
+		}while($this->getPrevious());
 		$traceProperty->setAccessible(false);
 	}
 }

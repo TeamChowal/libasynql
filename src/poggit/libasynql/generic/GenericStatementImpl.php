@@ -40,22 +40,22 @@ use function uksort;
 
 abstract class GenericStatementImpl implements GenericStatement, JsonSerializable{
 	/** @var string */
-	protected $name;
+	protected string $name;
 	/** @var string[] */
-	protected $query;
+	protected array $query;
 	/** @var string */
-	protected $doc;
+	protected string $doc;
 	/** @var GenericVariable[] */
-	protected $orderedVariables;
+	protected array $orderedVariables;
 	/** @var GenericVariable[] */
-	protected $variables;
+	protected array $variables;
 	/** @var string|null */
-	protected $file;
+	protected ?string $file;
 	/** @var int */
-	protected $lineNo;
+	protected int $lineNo;
 
 	/** @var string[][] */
-	protected $varPositions = [];
+	protected array $varPositions = [];
 
 	public function getName() : string{
 		return $this->name;
@@ -184,7 +184,7 @@ abstract class GenericStatementImpl implements GenericStatement, JsonSerializabl
 
 		foreach($this->variables as $variable){
 			if(!isset($usedNames[$variable->getName()])){
-				throw new InvalidArgumentException("The variable {$variable->getName()} is not used anywhere in the query \"{$this->name}\"! Check for typos.");
+				throw new InvalidArgumentException("The variable {$variable->getName()} is not used anywhere in the query \"$this->name\"! Check for typos.");
 			}
 		}
 	}
@@ -224,13 +224,13 @@ abstract class GenericStatementImpl implements GenericStatement, JsonSerializabl
 		return $queries;
 	}
 
-	private static function getType($value){
+	private static function getType($value) : string{
 		return is_object($value) ? get_class($value) : gettype($value);
 	}
 
 	protected abstract function formatVariable(GenericVariable $variable, $value, ?string $placeHolder, array &$outArgs) : string;
 
-	public function jsonSerialize(){
+	public function jsonSerialize() : array{
 		return [
 			"name" => $this->name,
 			"query" => $this->query,

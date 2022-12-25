@@ -33,20 +33,19 @@ use poggit\libasynql\SqlResult;
 use poggit\libasynql\SqlThread;
 use const PTHREADS_INHERIT_CONSTANTS;
 use const PTHREADS_INHERIT_INI;
-use function assert;
 
 abstract class SqlSlaveThread extends Thread implements SqlThread{
 	/** @var SleeperNotifier */
-	private $notifier;
+	private SleeperNotifier $notifier;
 
-	private static $nextSlaveNumber = 0;
+	private static int $nextSlaveNumber = 0;
 
-	protected $slaveNumber;
-	protected $bufferSend;
-	protected $bufferRecv;
-	protected $connCreated = false;
-	protected $connError;
-	protected $busy = false;
+	protected int $slaveNumber;
+	protected QueryRecvQueue $bufferSend;
+	protected QueryRecvQueue $bufferRecv;
+	protected bool $connCreated = false;
+	protected ?string $connError = null;
+	protected bool $busy = false;
 
 	protected function __construct(SleeperNotifier $notifier, QuerySendQueue $bufferSend = null, QueryRecvQueue $bufferRecv = null){
 		$this->notifier = $notifier;
@@ -158,7 +157,7 @@ abstract class SqlSlaveThread extends Thread implements SqlThread{
 	 * @return SqlResult
 	 * @throws SqlError
 	 */
-	protected abstract function executeQuery($resource, int $mode, string $query, array $params) : SqlResult;
+	protected abstract function executeQuery(mixed $resource, int $mode, string $query, array $params) : SqlResult;
 
 
 	protected abstract function close(&$resource) : void;

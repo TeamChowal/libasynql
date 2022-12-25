@@ -32,7 +32,7 @@ use function fgets;
 use function implode;
 use function ltrim;
 use function preg_split;
-use function strpos;
+use function str_starts_with;
 use function substr;
 use function trim;
 use const PREG_SPLIT_NO_EMPTY;
@@ -40,30 +40,30 @@ use const PREG_SPLIT_OFFSET_CAPTURE;
 
 class GenericStatementFileParser{
 	/** @var string|null */
-	private $fileName;
+	private ?string $fileName;
 	/** @var resource */
 	private $fh;
 	/** @var int */
-	private $lineNo = 0;
+	private int $lineNo = 0;
 
 	/** @var string[] */
-	private $identifierStack = [];
+	private array $identifierStack = [];
 	/** @var bool */
-	private $parsingQuery = false;
+	private bool $parsingQuery = false;
 	/** @var string[] */
-	private $docLines = [];
+	private array $docLines = [];
 	/** @var GenericVariable[] */
-	private $variables = [];
+	private array $variables = [];
 
 	/** @var string[] the delimited buffers for the current query */
-	private $currentBuffers = [];
+	private array $currentBuffers = [];
 	/** @var string[] the lines for the current delimited query buffer */
-	private $buffer = [];
+	private array $buffer = [];
 
 	/** @var string|null */
-	private $knownDialect = null;
+	private ?string $knownDialect = null;
 	/** @var GenericStatement[] */
-	private $results = [];
+	private array $results = [];
 
 	/**
 	 * @param string|null $fileName
@@ -119,7 +119,7 @@ class GenericStatementFileParser{
 	}
 
 	private function tryCommand(string $line) : bool{
-		if(strpos($line, "-- #") !== 0){
+		if(!str_starts_with($line, "-- #")){
 			return false;
 		}
 
@@ -196,7 +196,7 @@ class GenericStatementFileParser{
 		}
 
 		if(count($this->buffer) === 0){
-			$this->error("Encountered delimiter line without any query content");;
+			$this->error("Encountered delimiter line without any query content");
 		}
 
 		$this->flushBuffer();

@@ -24,7 +24,7 @@ namespace poggit\libasynql\result;
 
 class SqlInsertResult extends SqlChangeResult{
 	/** @var int */
-	private $insertId;
+	private int $insertId;
 
 	public function __construct(int $affectedRows, int $insertId){
 		parent::__construct($affectedRows);

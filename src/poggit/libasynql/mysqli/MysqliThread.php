@@ -59,9 +59,9 @@ use const PHP_INT_MAX;
 
 class MysqliThread extends SqlSlaveThread{
 	/** @var string */
-	private $credentials;
+	private string $credentials;
 	/** @var AttachableThreadedLogger */
-	private $logger;
+	private AttachableThreadedLogger $logger;
 
 	public static function createFactory(MysqlCredentials $credentials, AttachableThreadedLogger $logger) : Closure{
 		return function(SleeperNotifier $notifier, QuerySendQueue $bufferSend, QueryRecvQueue $bufferRecv) use ($credentials, $logger){
@@ -103,7 +103,7 @@ class MysqliThread extends SqlSlaveThread{
 				try{
 					$cred->reconnectMysqli($mysqli);
 					$success = true;
-				}catch(SqlError $e){
+				}catch(SqlError){
 					$attempts++;
 				}
 			}while(!$success);

@@ -35,7 +35,6 @@ use function array_keys;
 use function count;
 use function extension_loaded;
 use function implode;
-use function is_array;
 use function is_string;
 use function strtolower;
 use function usleep;
@@ -45,7 +44,7 @@ use function usleep;
  */
 final class libasynql{
 	/** @var bool */
-	private static $packaged;
+	private static bool $packaged;
 
 	public static function isPackaged() : bool{
 		return self::$packaged;
@@ -73,11 +72,7 @@ final class libasynql{
 	 * @return DataConnector
 	 * @throws SqlError if the connection could not be created
 	 */
-	public static function create(PluginBase $plugin, $configData, array $sqlMap, bool $logQueries = null) : DataConnector{
-		if(!is_array($configData)){
-			throw new ConfigException("Database settings are missing or incorrect");
-		}
-
+	public static function create(PluginBase $plugin, array $configData, array $sqlMap, bool $logQueries = null) : DataConnector{
 		$type = (string) $configData["type"];
 		if($type === ""){
 			throw new ConfigException("Database type is missing");

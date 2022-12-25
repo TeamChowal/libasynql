@@ -30,17 +30,17 @@ use function strlen;
 
 class MysqlCredentials implements JsonSerializable{
 	/** @var string $host */
-	private $host;
+	private string $host;
 	/** @var string $username */
-	private $username;
+	private string $username;
 	/** @var string $password */
-	private $password;
+	private string $password;
 	/** @var string $schema */
-	private $schema;
+	private string $schema;
 	/** @var int $port */
-	private $port;
+	private int $port;
 	/** @var string $socket */
-	private $socket;
+	private string $socket;
 
 	/**
 	 * Creates a new {@link MysqlCredentials} instance from an array (e.g. from Config), with the following defaults:

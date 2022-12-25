@@ -25,8 +25,8 @@ namespace poggit\libasynql\mysqli;
 use poggit\libasynql\result\SqlColumnInfo;
 
 class MysqlColumnInfo extends SqlColumnInfo{
-	private $flags;
-	private $mysqlType;
+	private int $flags;
+	private int $mysqlType;
 
 	public function __construct(string $name, string $type, int $flags, int $mysqlType){
 		parent::__construct($name, $type);

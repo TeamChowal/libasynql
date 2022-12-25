@@ -181,9 +181,10 @@ interface DataConnector{
 	 * Executes a query with probably multiple delimited queries, and returns an array of {@link SqlResult}s mapping to each query.
 	 *
 	 * @param string        $queryName the {@link GenericPreparedStatement} query name
-	 * @param mixed[]       $args      the variables as defined in the {@link GenericPreparedStatement}
-	 * @param callable|null $onSelect  an optional callback when the query has succeeded: <code>function(SqlResult[] $results) : void{}</code>
-	 * @param callable|null $onError   an optional callback when the query has failed: <code>function({@link SqlError} $error) : void{}</code>
+	 * @param mixed[]       $args the variables as defined in the {@link GenericPreparedStatement}
+	 * @param int           $mode
+	 * @param callable|null $handler
+	 * @param callable|null $onError an optional callback when the query has failed: <code>function({@link SqlError} $error) : void{}</code>
 	 */
 	public function executeMulti(string $queryName, array $args, int $mode, ?callable $handler = null, ?callable $onError = null) : void;
 
@@ -204,8 +205,9 @@ interface DataConnector{
 	 * If {@link SqlColumnInfo} is needed, use `asyncSelectWithInfo` instead.
 	 *
 	 * @param string  $queryName the {@link GenericPreparedStatement} query name
-	 * @param mixed[] $args      the variables as defined in the {@link GenericPreparedStatement}
-	 * @return Generator<mixed, Await::RESOLVE|Await::REJECT, mixed, array[] $rows>
+	 * @param mixed[] $args the variables as defined in the {@link GenericPreparedStatement}
+	 *
+	 * @return Generator $rows>
 	 */
 	public function asyncSelect(string $queryName, array $args = []) : Generator;
 

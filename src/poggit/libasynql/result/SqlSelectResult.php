@@ -25,8 +25,6 @@ namespace poggit\libasynql\result;
 use poggit\libasynql\SqlResult;
 
 class SqlSelectResult extends SqlResult{
-	private $columnInfo;
-	private $rows;
 
 	/**
 	 * SqlSelectResult constructor.
@@ -34,10 +32,10 @@ class SqlSelectResult extends SqlResult{
 	 * @param SqlColumnInfo[] $columnInfo
 	 * @param array[]         $rows
 	 */
-	public function __construct(array $columnInfo, array $rows){
-		$this->columnInfo = $columnInfo;
-		$this->rows = $rows;
-	}
+	public function __construct(
+		private readonly array $columnInfo,
+		private readonly array $rows
+	){}
 
 	/**
 	 * Returns the columns from the query

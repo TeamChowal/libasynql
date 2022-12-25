@@ -37,7 +37,6 @@ use poggit\libasynql\SqlError;
 use poggit\libasynql\SqlResult;
 use poggit\libasynql\SqlThread;
 use SQLite3;
-use function array_values;
 use function assert;
 use function is_array;
 use const INF;
@@ -51,7 +50,7 @@ use const SQLITE3_TEXT;
 
 class Sqlite3Thread extends SqlSlaveThread{
 	/** @var string */
-	private $path;
+	private string $path;
 
 	public static function createFactory(string $path) : Closure{
 		return function(SleeperNotifier $notifier, QuerySendQueue $send, QueryRecvQueue $recv) use ($path){

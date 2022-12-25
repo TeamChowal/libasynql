@@ -34,7 +34,6 @@ use poggit\libasynql\generic\GenericStatementFileParser;
 use poggit\libasynql\GenericStatement;
 use poggit\libasynql\libasynql;
 use poggit\libasynql\result\SqlChangeResult;
-use poggit\libasynql\result\SqlColumnInfo;
 use poggit\libasynql\result\SqlInsertResult;
 use poggit\libasynql\result\SqlSelectResult;
 use poggit\libasynql\SqlError;
@@ -49,23 +48,22 @@ use function count;
 use function is_resource;
 use function json_encode;
 use function str_replace;
-use function usleep;
 
 class DataConnectorImpl implements DataConnector{
 	/** @var Plugin */
-	private $plugin;
+	private PLugin $plugin;
 	/** @var SqlThread */
-	private $thread;
+	private SqlThread $thread;
 	/** @var Logger|null */
-	private $logger;
+	private ?Logger $logger;
 	/** @var GenericStatement[] */
-	private $queries = [];
+	private array $queries = [];
 	/** @var callable[] */
-	private $handlers = [];
+	private array $handlers = [];
 	/** @var int */
-	private $queryId = 0;
+	private int $queryId = 0;
 	/** @var string|null */
-	private $placeHolder;
+	private ?string $placeHolder;
 
 	/**
 	 * @param Plugin      $plugin
