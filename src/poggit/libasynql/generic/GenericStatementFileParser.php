@@ -276,6 +276,6 @@ class GenericStatementFileParser{
 	 * @throw GenericStatementFileParseException
 	 */
 	private function error(string $problem) : GenericStatementFileParseException{
-		throw new GenericStatementFileParseException($problem, $this->lineNo, $this->fileName);
+		throw new GenericStatementFileParseException($problem, $this->lineNo, $this->fileName ?? "SQL file");
 	}
 }
