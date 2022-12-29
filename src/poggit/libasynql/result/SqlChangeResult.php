@@ -26,7 +26,7 @@ use poggit\libasynql\SqlResult;
 
 class SqlChangeResult extends SqlResult{
 
-	public function __construct(private readonly int $affectedRows){	}
+	public function __construct(private readonly int $affectedRows){}
 
 	public function getAffectedRows() : int{
 		return $this->affectedRows;

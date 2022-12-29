@@ -38,7 +38,6 @@ use poggit\libasynql\SqlResult;
 use poggit\libasynql\SqlThread;
 use SQLite3;
 use function assert;
-use function is_array;
 use const INF;
 use const NAN;
 use const SQLITE3_ASSOC;
@@ -49,8 +48,6 @@ use const SQLITE3_NULL;
 use const SQLITE3_TEXT;
 
 class Sqlite3Thread extends SqlSlaveThread{
-	/** @var string */
-	private string $path;
 
 	public static function createFactory(string $path) : Closure{
 		return function(SleeperNotifier $notifier, QuerySendQueue $send, QueryRecvQueue $recv) use ($path){
@@ -58,8 +55,7 @@ class Sqlite3Thread extends SqlSlaveThread{
 		};
 	}
 
-	public function __construct(string $path, SleeperNotifier $notifier, QuerySendQueue $send = null, QueryRecvQueue $recv = null){
-		$this->path = $path;
+	public function __construct(private readonly string $path, SleeperNotifier $notifier, QuerySendQueue $send = null, QueryRecvQueue $recv = null){
 		parent::__construct($notifier, $send, $recv);
 	}
 
@@ -109,7 +105,7 @@ class Sqlite3Thread extends SqlSlaveThread{
 				/** @var SqlColumnInfo[] $colInfo */
 				$colInfo = [];
 				$rows = [];
-				while(is_array($row = $result->fetchArray(SQLITE3_ASSOC))){
+				while(($row = $result->fetchArray(SQLITE3_ASSOC)) !== false){
 					foreach(array_keys($row) as $i => $columnName){
 						static $columnTypeMap = [
 							SQLITE3_INTEGER => SqlColumnInfo::TYPE_INT,

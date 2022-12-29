@@ -36,15 +36,15 @@ use const PTHREADS_INHERIT_INI;
 
 abstract class SqlSlaveThread extends Thread implements SqlThread{
 	/** @var SleeperNotifier */
-	private SleeperNotifier $notifier;
+	private readonly SleeperNotifier $notifier;
 
 	private static int $nextSlaveNumber = 0;
 
-	protected int $slaveNumber;
-	protected QuerySendQueue $bufferSend;
-	protected QueryRecvQueue $bufferRecv;
+	protected readonly int $slaveNumber;
+	protected readonly QuerySendQueue $bufferSend;
+	protected readonly QueryRecvQueue $bufferRecv;
 	protected bool $connCreated = false;
-	protected ?string $connError = null;
+	protected ?string $connError;
 	protected bool $busy = false;
 
 	protected function __construct(SleeperNotifier $notifier, QuerySendQueue $bufferSend = null, QueryRecvQueue $bufferRecv = null){
@@ -53,7 +53,6 @@ abstract class SqlSlaveThread extends Thread implements SqlThread{
 		$this->slaveNumber = self::$nextSlaveNumber++;
 		$this->bufferSend = $bufferSend ?? new QuerySendQueue();
 		$this->bufferRecv = $bufferRecv ?? new QueryRecvQueue();
-		$this->bufferRecv->addAvailableThread();
 
 		if(!libasynql::isPackaged()){
 			/** @noinspection NullPointerExceptionInspection */
@@ -74,9 +73,7 @@ abstract class SqlSlaveThread extends Thread implements SqlThread{
 		}
 
 		while(true){
-			$this->bufferRecv->removeAvailableThread();
 			$row = $this->bufferSend->fetchQuery();
-			$this->bufferRecv->addAvailableThread();
 			if(!is_string($row)){
 				break;
 			}
@@ -96,7 +93,6 @@ abstract class SqlSlaveThread extends Thread implements SqlThread{
 			$this->notifier->wakeupSleeper();
 			$this->busy = false;
 		}
-		$this->bufferRecv->removeAvailableThread();
 		$this->close($resource);
 	}
 
@@ -123,7 +119,7 @@ abstract class SqlSlaveThread extends Thread implements SqlThread{
 	}
 
 	public function readResults(array &$callbacks) : void{
-		while($this->bufferRecv->waitForResults($queryId, $results)){
+		while($this->bufferRecv->fetchResults($queryId, $results)){
 			if(!isset($callbacks[$queryId])){
 				throw new InvalidArgumentException("Missing handler for query #$queryId");
 			}

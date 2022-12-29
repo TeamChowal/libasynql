@@ -47,7 +47,7 @@ interface MysqlFlags{
 	/* The following are only sent to new clients */
 	/** field is an enum  */
 	public const ENUM_FLAG = 1 << 8;
-	/** field is a autoincrement field  */
+	/** field is an autoincrement field  */
 	public const AUTO_INCREMENT_FLAG = 1 << 9;
 	/** Field is a timestamp  */
 	public const TIMESTAMP_FLAG = 1 << 10;

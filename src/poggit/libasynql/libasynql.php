@@ -65,7 +65,7 @@ final class libasynql{
 	 * Create a {@link DatabaseConnector} from a plugin and a config entry, and initializes it with the relevant SQL files according to the selected dialect
 	 *
 	 * @param PluginBase          $plugin     the plugin using libasynql
-	 * @param mixed               $configData the config entry for database settings
+	 * @param array               $configData the config entry for database settings
 	 * @param string[]|string[][] $sqlMap     an associative array with key as the SQL dialect ("mysql", "sqlite") and value as a string or string array indicating the relevant SQL files in the plugin's resources directory
 	 * @param bool                $logQueries whether libasynql should log the queries with the plugin logger at the DEBUG level. Default <code>!libasynql::isPackaged()</code>.
 	 *

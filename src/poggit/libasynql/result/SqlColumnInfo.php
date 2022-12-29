@@ -31,10 +31,7 @@ class SqlColumnInfo{
 	public const TYPE_NULL = "null";
 	public const TYPE_OTHER = "unknown";
 
-	public function __construct(
-		private readonly string $name,
-		private readonly string $type
-	){	}
+	public function __construct(private readonly string $name, private readonly string $type){}
 
 	public function getName() : string{
 		return $this->name;

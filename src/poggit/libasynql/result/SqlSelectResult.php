@@ -32,10 +32,7 @@ class SqlSelectResult extends SqlResult{
 	 * @param SqlColumnInfo[] $columnInfo
 	 * @param array[]         $rows
 	 */
-	public function __construct(
-		private readonly array $columnInfo,
-		private readonly array $rows
-	){}
+	public function __construct(private readonly array $columnInfo, private readonly array $rows){}
 
 	/**
 	 * Returns the columns from the query

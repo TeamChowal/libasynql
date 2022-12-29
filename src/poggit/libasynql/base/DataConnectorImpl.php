@@ -48,12 +48,13 @@ use function count;
 use function is_resource;
 use function json_encode;
 use function str_replace;
+use function usleep;
 
 class DataConnectorImpl implements DataConnector{
 	/** @var Plugin */
-	private PLugin $plugin;
+	private readonly Plugin $plugin;
 	/** @var SqlThread */
-	private SqlThread $thread;
+	private readonly SqlThread $thread;
 	/** @var Logger|null */
 	private ?Logger $logger;
 	/** @var GenericStatement[] */
@@ -144,8 +145,7 @@ class DataConnectorImpl implements DataConnector{
 		$onSuccess = yield Await::RESOLVE;
 		$onError = yield Await::REJECT;
 		$this->executeChange($queryName, $args, $onSuccess, $onError);
-		$affectedRows = yield Await::ONCE;
-		return $affectedRows;
+		return yield Await::ONCE;
 	}
 
 	public function executeInsert(string $queryName, array $args = [], ?callable $onInserted = null, ?callable $onError = null) : void{
@@ -162,8 +162,7 @@ class DataConnectorImpl implements DataConnector{
 		$this->executeInsert($queryName, $args, static function(int $insertId, int $affectedRows) use($onSuccess) : void{
 			$onSuccess([$insertId, $affectedRows]);
 		}, $onError);
-		$affectedRows = yield Await::ONCE;
-		return $affectedRows;
+		return yield Await::ONCE;
 	}
 
 	public function executeSelect(string $queryName, array $args = [], ?callable $onSelect = null, ?callable $onError = null) : void{
@@ -194,8 +193,7 @@ class DataConnectorImpl implements DataConnector{
 		$this->executeSelect($queryName, $args, static function(array $rows, array $columns) use($onSuccess) : void{
 			$onSuccess($rows);
 		}, $onError);
-		$rows = yield Await::ONCE;
-		return $rows;
+		return yield Await::ONCE;
 	}
 
 	public function asyncSelectWithInfo(string $queryName, array $args = []) : Generator{
@@ -204,8 +202,7 @@ class DataConnectorImpl implements DataConnector{
 		$this->executeSelect($queryName, $args, static function(array $rows, array $columns) use($onSuccess) : void{
 			$onSuccess([$rows, $columns]);
 		}, $onError);
-		$rows = yield Await::ONCE;
-		return $rows;
+		return yield Await::ONCE;
 	}
 
 	private function executeImpl(string $queryName, array $args, int $mode, callable $handler, ?callable $onError) : void{
@@ -311,6 +308,7 @@ class DataConnectorImpl implements DataConnector{
 	public function waitAll() : void{
 		while(!empty($this->handlers)){
 			$this->checkResults();
+			usleep(1000);
 		}
 	}
 

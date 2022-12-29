@@ -29,18 +29,6 @@ use poggit\libasynql\SqlError;
 use function strlen;
 
 class MysqlCredentials implements JsonSerializable{
-	/** @var string $host */
-	private string $host;
-	/** @var string $username */
-	private string $username;
-	/** @var string $password */
-	private string $password;
-	/** @var string $schema */
-	private string $schema;
-	/** @var int $port */
-	private int $port;
-	/** @var string $socket */
-	private string $socket;
 
 	/**
 	 * Creates a new {@link MysqlCredentials} instance from an array (e.g. from Config), with the following defaults:
@@ -76,14 +64,14 @@ class MysqlCredentials implements JsonSerializable{
 	 * @param int    $port
 	 * @param string $socket
 	 */
-	public function __construct(string $host, string $username, string $password, string $schema, int $port = 3306, string $socket = ""){
-		$this->host = $host;
-		$this->username = $username;
-		$this->password = $password;
-		$this->schema = $schema;
-		$this->port = $port;
-		$this->socket = $socket;
-	}
+	public function __construct(
+		private readonly string $host,
+		private readonly string $username,
+		private readonly string $password,
+		private readonly string $schema,
+		private readonly int $port = 3306,
+		private readonly string $socket = ""
+	){	}
 
 	/**
 	 * Creates a new <a href="https://php.net/mysqli">mysqli</a> instance

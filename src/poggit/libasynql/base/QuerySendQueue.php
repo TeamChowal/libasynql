@@ -29,7 +29,7 @@ class QuerySendQueue extends Threaded{
 	/** @var bool */
 	private bool $invalidated = false;
 	/** @var Threaded */
-	private Threaded $queries;
+	private readonly Threaded $queries;
 
 	public function __construct(){
 		$this->queries = new Threaded();

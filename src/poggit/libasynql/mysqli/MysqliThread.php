@@ -58,10 +58,10 @@ use function unserialize;
 use const PHP_INT_MAX;
 
 class MysqliThread extends SqlSlaveThread{
-	/** @var string */
-	private string $credentials;
-	/** @var AttachableThreadedLogger */
-	private AttachableThreadedLogger $logger;
+
+	private readonly string $credentials;
+
+	private readonly AttachableThreadedLogger $logger;
 
 	public static function createFactory(MysqlCredentials $credentials, AttachableThreadedLogger $logger) : Closure{
 		return function(SleeperNotifier $notifier, QuerySendQueue $bufferSend, QueryRecvQueue $bufferRecv) use ($credentials, $logger){

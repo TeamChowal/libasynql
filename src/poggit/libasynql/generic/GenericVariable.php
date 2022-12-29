@@ -23,7 +23,6 @@ declare(strict_types=1);
 namespace poggit\libasynql\generic;
 
 use InvalidArgumentException;
-use InvalidStateException;
 use JsonSerializable;
 use function assert;
 use function in_array;
@@ -118,7 +117,7 @@ class GenericVariable implements JsonSerializable{
 
 	public function unlist() : GenericVariable{
 		if(!$this->list){
-			throw new InvalidStateException("Cannot unlist a non-list variable");
+			throw new InvalidArgumentException("Cannot unlist a non-list variable");
 		}
 		$clone = clone $this;
 		$clone->list = false;
@@ -144,7 +143,7 @@ class GenericVariable implements JsonSerializable{
 	 */
 	public function canBeEmpty() : bool{
 		if(!$this->list){
-			throw new InvalidStateException("canBeEmpty() is only available for list variables");
+			throw new InvalidArgumentException("canBeEmpty() is only available for list variables");
 		}
 
 		return $this->canEmpty;
@@ -193,7 +192,7 @@ class GenericVariable implements JsonSerializable{
 		return true;
 	}
 
-	public function jsonSerialize(): array{
+	public function jsonSerialize() : array{
 		return [
 			"name" => $this->name,
 			"isList" => $this->list,

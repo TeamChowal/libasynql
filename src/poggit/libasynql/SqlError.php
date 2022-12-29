@@ -56,7 +56,7 @@ class SqlError extends RuntimeException{
 	public const STAGE_RESPONSE = "RESPONSE";
 
 	private string $stage;
-	private string $errorMessage;
+	private string$errorMessage;
 	private ?string $query;
 	private ?array $args;
 

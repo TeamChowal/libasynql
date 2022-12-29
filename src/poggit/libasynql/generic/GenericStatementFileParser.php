@@ -151,7 +151,7 @@ class GenericStatementFileParser{
 				$this->endCommand();
 				return true;
 			case "*":
-				$this->docCommand($args, $line, $argOffsets);
+				$this->docCommand($line);
 				return true;
 			case ":":
 				$this->varCommand($args, $line, $argOffsets);
@@ -261,7 +261,7 @@ class GenericStatementFileParser{
 		$this->parsingQuery = true;
 	}
 
-	private function docCommand(array $args, string $line, array $argOffsets) : void{
+	private function docCommand(string $line) : void{
 		if(empty($this->identifierStack)){
 			$this->error("Unexpected documentation; start a query with { first");
 		}
@@ -276,6 +276,6 @@ class GenericStatementFileParser{
 	 * @throw GenericStatementFileParseException
 	 */
 	private function error(string $problem) : GenericStatementFileParseException{
-		throw new GenericStatementFileParseException($problem, $this->lineNo, $this->fileName ?? "SQL file");
+		throw new GenericStatementFileParseException($problem, $this->lineNo, $this->fileName);
 	}
 }

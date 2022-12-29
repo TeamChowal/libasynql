@@ -29,18 +29,18 @@ use poggit\libasynql\SqlThread;
 
 class SqlThreadPool implements SqlThread{
 	/** @var SleeperNotifier */
-	private SleeperNotifier $notifier;
+	private readonly SleeperNotifier $notifier;
 	/** @var callable */
 	private $workerFactory;
 	/** @var SqlSlaveThread[] */
 	private array $workers = [];
 	/** @var int */
-	private int $workerLimit;
+	private readonly int $workerLimit;
 
 	/** @var QuerySendQueue */
-	private QuerySendQueue $bufferSend;
+	private readonly QuerySendQueue $bufferSend;
 	/** @var QueryRecvQueue */
-	private QueryRecvQueue $bufferRecv;
+	private readonly QueryRecvQueue $bufferRecv;
 
 	/** @var DataConnectorImpl|null */
 	private ?DataConnectorImpl $dataConnector = null;
@@ -104,7 +104,7 @@ class SqlThreadPool implements SqlThread{
 	}
 
 	public function readResults(array &$callbacks) : void{
-		while($this->bufferRecv->waitForResults($queryId, $results)){
+		while($this->bufferRecv->fetchResults($queryId, $results)){
 			if(!isset($callbacks[$queryId])){
 				throw new InvalidArgumentException("Missing handler for query #$queryId");
 			}

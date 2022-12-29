@@ -205,9 +205,8 @@ interface DataConnector{
 	 * If {@link SqlColumnInfo} is needed, use `asyncSelectWithInfo` instead.
 	 *
 	 * @param string  $queryName the {@link GenericPreparedStatement} query name
-	 * @param mixed[] $args the variables as defined in the {@link GenericPreparedStatement}
-	 *
-	 * @return Generator $rows>
+	 * @param mixed[] $args      the variables as defined in the {@link GenericPreparedStatement}
+	 * @return Generator<mixed|Await::RESOLVE|Await::REJECT $rows>
 	 */
 	public function asyncSelect(string $queryName, array $args = []) : Generator;
 
