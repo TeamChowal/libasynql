@@ -48,7 +48,6 @@ use function count;
 use function is_resource;
 use function json_encode;
 use function str_replace;
-use function usleep;
 
 class DataConnectorImpl implements DataConnector{
 	/** @var Plugin */
@@ -308,7 +307,6 @@ class DataConnectorImpl implements DataConnector{
 	public function waitAll() : void{
 		while(!empty($this->handlers)){
 			$this->checkResults();
-			usleep(1000);
 		}
 	}
 
