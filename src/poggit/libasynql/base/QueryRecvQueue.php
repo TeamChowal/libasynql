@@ -24,25 +24,34 @@ namespace poggit\libasynql\base;
 
 use poggit\libasynql\SqlError;
 use poggit\libasynql\SqlResult;
-use Threaded;
+use ThreadedArray;
+use ThreadedBase;
 use function is_string;
 use function serialize;
 use function unserialize;
 
-class QueryRecvQueue extends Threaded{
+class QueryRecvQueue extends ThreadedBase{
+
+	/** @var ThreadedArray<string> */
+	private ThreadedArray $queue;
+
+	public function __construct(){
+		$this->queue = new ThreadedArray();
+	}
+
 	/**
 	 * @param SqlResult[] $results
 	 */
 	public function publishResult(int $queryId, array $results) : void{
-		$this[] = serialize([$queryId, $results]);
+		$this->queue[] = serialize([$queryId, $results]);
 	}
 
 	public function publishError(int $queryId, SqlError $error) : void{
-		$this[] = serialize([$queryId, $error]);
+		$this->queue[] = serialize([$queryId, $error]);
 	}
 
 	public function fetchResults(&$queryId, &$results) : bool{
-		$row = $this->shift();
+		$row = $this->queue->shift();
 		if(is_string($row)){
 			[$queryId, $results] = unserialize($row, ["allowed_classes" => true]);
 			return true;
